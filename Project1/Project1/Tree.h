@@ -7,8 +7,16 @@ template<class TYPE>
 struct TreeNode
 {
 	TYPE data;
-	TreeNode<TYPE>* father;
-	DoubleList<TYPE>* sons;
+	TreeNode<TYPE>* parent;
+	DoubleList<TreeNode*> sons;
+	
+	//--------PRE ORDER--------
+		void visitAll(DoubleList<TYPE>* list);
+		{
+			list.Add(data);
+			for (unsigned int i = 0; i < sons.count(); i++)
+				visitAll(list);
+		}
 };
 
 
@@ -20,19 +28,37 @@ class Tree
 
 	public:
 
-		Tree(TYPE rootData)
+		Tree(const TYPE& rootData)
 		{
-			rootNode = NULL;
+			rootNode = new TreeNode<TYPE>;
 			rootNode->data = rootData;
+			rootNode->parent = NULL;
 		}
 
-		void add(TYPE data)
+		TreeNode<TYPE>* add(const TYPE& data)
 		{
-			Tree<TYPE>* newNode = new Tree<TYPE>;
+			TreeNode<TYPE>* newNode = new TreeNode<TYPE>;
 			newNode->data = data;
-			rootNode.sons.add(newNode);
-			newNode->father = rootNode;
+			rootNode->sons.add(newNode);
+			newNode->parent = rootNode;
+			return newNode;
 		}
+
+		TreeNode<TYPE>* add(const TYPE& data, TreeNode<TYPE>* parentNode)
+		{
+			TreeNode<TYPE>* newNode = new TreeNode<TYPE>;
+			newNode->data = data;
+			parentNode.sons.add(newNode);
+			newNode->parent = parentNode;
+			return newNode;
+		}
+
+		//--------PRE ORDER--------
+		void visitAllNodes(DoubleList<TYPE>* list)const;
+		{
+		rootNode.visitAll(list);
+		}
+		
 };
 
 #endif // !__Tree_H__
