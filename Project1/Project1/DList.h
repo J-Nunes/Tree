@@ -139,11 +139,11 @@ public:
 		DListNode<TYPE>*  tmp2;
 		tmp = start;
 
-		while(new != NULL)
+		while(tmp != NULL)
 		{
-			p_next = tmp->next;
-			delete tmp;
-			tmp = tmp2				;
+			tmp = tmp->next;
+			delete tmp2;
+			tmp2 = tmp;
 		}
 
 		start = end = NULL;

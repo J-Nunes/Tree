@@ -21,7 +21,7 @@
     <ClInclude Include="..\..\..\Stack\Stack\Stack.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Desktop\Material_Examen_Parcial_P2\DList.h">
+    <ClInclude Include="DList.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

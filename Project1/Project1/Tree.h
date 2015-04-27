@@ -11,7 +11,7 @@ struct TreeNode
 	TreeNode<TYPE>* parent;
 	DList<TreeNode*> sons;
 	
-	void preOrder(DList<TYPE>* list);
+	void preOrder(DList<TreeNode>* list)
 	{
 		list.add(data);
 
@@ -21,7 +21,7 @@ struct TreeNode
 			tmp->value->preOrder(list);
 	}
 
-	void postOrder(DList<TYPE>* list);
+	void postOrder(DList<TreeNode>* list)
 	{
 		DListNode<TreeNode*>* tmp = sons.start;
 
@@ -31,19 +31,20 @@ struct TreeNode
 		list.add(data);
 	}
 
-	void inOrder(DList<TYPE>* list);
+	void inOrder(DList<TreeNode>* list)
 	{
 		DListNode<TreeNode*>* tmp = sons.start;
 
 		for (; tmp != NULL; tmp = tmp->next)
 		{
 			if (tmp != sons.start)
-			list.add(data);
+				list.add(data);
 
 			tmp->value->inOrder(list);
 		}
 
 		list.add(data);
+	}
 };
 
 
@@ -71,6 +72,33 @@ class Tree
 			return newNode;
 		}
 
+		void clear()
+		{
+			DList<TreeNode>* list;
+			iterativePreOrder(list);
+			list->clear;
+		}
+
+		void clear(TreeNode<TYPE>* nodeToDelete)const
+		{
+			Stack<TreeNode> s;
+			TreeNode<TYPE>* tmpNode = nodeToDelete;
+
+			while (tmpNode != NULL)
+			{
+				DListNode<TreeNode>* tmp = sons.end;
+
+				while (tmp != NULL)
+				{
+					s.push(tmp->data);
+					tmp = tmp->prev;
+				}
+
+				delete tmpNode;
+				tmpNode = s.pop;
+			}
+		}
+
 		TreeNode<TYPE>* add(const TYPE& data, TreeNode<TYPE>* parentNode)
 		{
 			TreeNode<TYPE>* newNode = new TreeNode<TYPE>;
@@ -80,22 +108,22 @@ class Tree
 			return newNode;
 		}
 
-		void recursivePreOrder(DList<TYPE>* list)const;
+		void recursivePreOrder(DList<TreeNode<TYPE>>* list)const
 		{
 			rootNode.preOrder(list);
 		}
 		
-		void recursivePostOrder(DList<TYPE>* list)const;
+		void recursivePostOrder(DList<TreeNode<TYPE>>* list)const
 		{
 			rootNode.postOrder(list);
 		}
 
-		void recursiveInOrder(DList<TYPE>* list)const;
+		void recursiveInOrder(DList<TreeNode<TYPE>>* list)const
 		{
 			rootNode.inOrder(list);
 		}
 
-		void iterativePreOrder(DList<TYPE>* list)const;
+		void iterativePreOrder(DList<TreeNode<TYPE>>* list)const
 		{
 			Stack<TreeNode> s;
 			TreeNode<TYPE>* tmpNode = rootNode;
@@ -114,7 +142,7 @@ class Tree
 			}
 		}
 
-		void iterativePostOrder(DList<TYPE>* list)const;
+		void iterativePostOrder(DList<TreeNode<TYPE>>* list)const
 		{
 			Stack<TreeNode> s;
 			TreeNode<TYPE>* tmpNode = rootNode;
@@ -144,7 +172,7 @@ class Tree
 			
 		}
 
-		void iterativeInOrder(DList<TYPE>* list)const;
+		void iterativeInOrder(DList<TreeNode<TYPE>>* list)const
 		{
 			Stack<TreeNode> s;
 			TreeNode<TYPE>* tmpNode = rootNode;
@@ -186,4 +214,4 @@ class Tree
 		}
 };
 
-#endif // !__Tree_H__
+#endif 

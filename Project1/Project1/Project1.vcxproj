@@ -65,8 +65,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Desktop\Material_Examen_Parcial_P2\DList.h" />
     <ClInclude Include="..\..\..\Stack\Stack\Stack.h" />
+    <ClInclude Include="DList.h" />
     <ClInclude Include="Tree.h" />
   </ItemGroup>
   <ItemGroup>
