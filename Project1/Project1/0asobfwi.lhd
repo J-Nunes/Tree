@@ -13,12 +13,12 @@ struct TreeNode
 	
 	void preOrder(DList<TreeNode<TYPE>*>* list)
 	{
-		list->add(this);
+		list.add(data);
 
 		DListNode<TreeNode*>* tmp = sons.start;
 
 		for (; tmp!=NULL; tmp=tmp->next)
-			tmp->data->preOrder(list);
+			tmp->value->preOrder(list);
 	}
 
 	void postOrder(DList<TreeNode<TYPE>*>* list)
@@ -26,30 +26,24 @@ struct TreeNode
 		DListNode<TreeNode*>* tmp = sons.start;
 
 		for (; tmp != NULL; tmp = tmp->next)
-			tmp->data->postOrder(list);
+			tmp->value->postOrder(list);
 		
-		list->add(this);
+		list.add(data);
 	}
 
 	void inOrder(DList<TreeNode<TYPE>*>* list)
 	{
 		DListNode<TreeNode*>* tmp = sons.start;
 
-		for (unsigned int i = 0;
-			i < sons.count() / 2;
-			i++, tmp = tmp->next)
-			{
-				tmp->data->inOrder(list);
-			}
+		for (; tmp != NULL; tmp = tmp->next)
+		{
+			if (tmp != sons.start)
+				list.add(data);
 
-		list->add(this);
+			tmp->value->inOrder(list);
+		}
 
-		for (unsigned int i = sons.count() / 2;
-			i < sons.count();
-			i++, tmp = tmp->next)
-			{
-				tmp->data->inOrder(list);
-			}
+		list.add(data);
 	}
 };
 
@@ -137,17 +131,17 @@ class Tree
 
 		void recursivePreOrder(DList<TreeNode<TYPE>*>* list)const
 		{
-			rootNode->preOrder(list);
+			rootNode.preOrder(list);
 		}
 		
 		void recursivePostOrder(DList<TreeNode<TYPE>*>* list)const
 		{
-			rootNode->postOrder(list);
+			rootNode.postOrder(list);
 		}
 
 		void recursiveInOrder(DList<TreeNode<TYPE>*>* list)const
 		{
-			rootNode->inOrder(list);
+			rootNode.inOrder(list);
 		}
 
 		void iterativePreOrder(DList<TreeNode<TYPE>*>* list)const
@@ -178,22 +172,22 @@ class Tree
 			{
 				if (tmpNode->sons.start != NULL && list->end != tmpNode->sons.end)
 				{
-						s.pushBack(tmpNode);
+						s.push(tmpNode);
 
-						DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.end;
+						DListNode<TreeNode>* tmp = sons.end;
 
 						while (tmp != NULL)
 						{
-							s.pushBack(tmp->data);
+							s.push(tmp->data);
 							tmp = tmp->prev;
 						}
-						tmpNode = s.pop();
+						tmpNode = s.pop;
 				}
 
 				else
 				{
-					list->add(tmpNode);
-					tmpNode = s.pop();
+					list.add(tmpNode);
+					tmpNode = s.pop;
 				}
 			}
 			
@@ -208,36 +202,34 @@ class Tree
 			{
 				if (tmpNode->sons.start != NULL)
 				{
-					DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.end;
-					
 					if (list->end != tmpNode->sons.start)
 					{
-						s.pushBack(tmpNode);
-						s.pushBack(tmpNode->sons.start->data);
-						tmpNode = s.pop();
+						s.push(tmpNode);
+						s.push(tmp->sons.start);
+						tmpNode = s.pop;
 					}
 
 					else
 					{
 						if (list->end == tmpNode->sons.end)
 						{
-							list->add(tmpNode);
-							tmpNode = s.pop();
+							list.add(tmpNode);
+							tmpNode = s.pop;
 						}
 
 						else
 						{
-							list->add(tmpNode);
-							s.pushBack(tmpNode->sons.end->data);
-							tmpNode = s.pop();
+							list.add(tmpNode);
+							s.push(tmp->sons.end);
+							tmpNode = s.pop;
 						}
 					}
 				}
 
 				else
 				{
-					list->add(tmpNode);
-					tmpNode = s.pop();
+					list.add(tmpNode);
+					tmpNode = s.pop;
 				}
 			}
 		}

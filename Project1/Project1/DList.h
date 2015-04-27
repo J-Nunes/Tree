@@ -135,9 +135,8 @@ public:
 	*/
 	void clear()
 	{
-		DListNode<TYPE>*   tmp;
-		DListNode<TYPE>*  tmp2;
-		tmp = start;
+		DListNode<TYPE>*   tmp = start;
+		DListNode<TYPE>*  tmp2 = tmp;
 
 		while(tmp != NULL)
 		{

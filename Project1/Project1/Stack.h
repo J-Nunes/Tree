@@ -54,12 +54,11 @@ public:
 
 	TYPE pop()
 	{
-		TYPE ret = -1;
 
 		if (data != NULL && elementsNumber > 0)
-			ret = data[--elementsNumber];
+			return data[--elementsNumber];
 
-		return ret;
+		//return -1;
 	}
 
 private:
