@@ -153,47 +153,47 @@ class Tree
 		void iterativePreOrder(DList<TreeNode<TYPE>*>* list)const
 		{
 			Stack<TreeNode<TYPE>*> s;
-			TreeNode<TYPE>* tmpNode = rootNode;
+			TreeNode<TYPE>* tmpTreeNode = rootNode;
 
-			while (tmpNode != NULL)
+			while (tmpTreeNode != NULL)
 			{
-				list->add(tmpNode);
-				DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.end;
+				list->add(tmpTreeNode);
+				DListNode<TreeNode<TYPE>*>* tmpListNode = tmpTreeNode->sons.end;
 
-				while (tmp != NULL)
+				while (tmpListNode != NULL)
 				{
-					s.pushBack(tmp->data);
-					tmp = tmp->prev;
+					s.pushBack(tmpListNode->data);
+					tmpListNode = tmpListNode->prev;
 				}
-				tmpNode = s.pop();
+				tmpTreeNode = s.pop();
 			}
 		}
 
 		void iterativePostOrder(DList<TreeNode<TYPE>*>* list)const
 		{
 			Stack<TreeNode<TYPE>*> s;
-			TreeNode<TYPE>* tmpNode = rootNode;
+			TreeNode<TYPE>* tmpTreeNode = rootNode;
 
-			while (tmpNode != NULL)
+			while (tmpTreeNode != NULL)
 			{
-				if (tmpNode->sons.start != NULL && list->end != tmpNode->sons.end)
+				if (tmpTreeNode->sons.start != NULL && list->end != tmpTreeNode->sons.end)
 				{
-						s.pushBack(tmpNode);
+					s.pushBack(tmpTreeNode);
 
-						DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.end;
+					DListNode<TreeNode<TYPE>*>* tmpListNode = tmpTreeNode->sons.end;
 
-						while (tmp != NULL)
-						{
-							s.pushBack(tmp->data);
-							tmp = tmp->prev;
-						}
-						tmpNode = s.pop();
+					while (tmpListNode != NULL)
+					{
+						s.pushBack(tmpListNode->data);
+						tmpListNode = tmpListNode->prev;
+					}
+					tmpTreeNode = s.pop();
 				}
 
 				else
 				{
-					list->add(tmpNode);
-					tmpNode = s.pop();
+					list->add(tmpTreeNode);
+					tmpTreeNode = s.pop();
 				}
 			}
 			
@@ -208,7 +208,7 @@ class Tree
 			{
 				if (tmpNode->sons.start != NULL)
 				{
-					DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.end;
+					DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.start;
 					
 					if (list->end != tmpNode->sons.start)
 					{

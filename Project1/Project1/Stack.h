@@ -49,16 +49,23 @@ public:
 			alloc(allocatedMemory + DYN_ARRAY_BLOCK_SIZE);
 		}
 
-		data[elementsNumber++] = element;
+		data[elementsNumber] = element;
+		elementsNumber++;
 	}
 
 	TYPE pop()
 	{
 
 		if (data != NULL && elementsNumber > 0)
-			return data[--elementsNumber];
+		{
+			unsigned int i = elementsNumber - 1;
+			TYPE ret = data[i];
+			elementsNumber--;
+			return ret;
+		}
 
-		//return -1;
+		else
+			return NULL;
 	}
 
 private:
