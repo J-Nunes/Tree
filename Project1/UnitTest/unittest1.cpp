@@ -194,7 +194,7 @@ namespace UnitTest
 
 		TEST_METHOD(TestIterativeInOrder)
 		{
-			/*unsigned int checker = 9;
+			unsigned int checker = 9;
 
 			Tree<int> tree(6);
 			tree.add(2, 6);
@@ -210,7 +210,7 @@ namespace UnitTest
 			DList<TreeNode<int>*> list;
 			tree.iterativeInOrder(&list);
 
-			Assert::AreEqual(list.count(), checker);*/
+			Assert::AreEqual(list.count(), checker);
 		}
 	};
 }

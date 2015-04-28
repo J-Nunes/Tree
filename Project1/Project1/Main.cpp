@@ -20,9 +20,8 @@ int main(int argc, char** argv)
 	tree.add(8, 7);
 	tree.add(9, 8);
 
-
 	DList<TreeNode<int>*> list;
-	tree.iterativePreOrder(&list);
+	tree.iterativeInOrder(&list);
 
 	cout << list.count() << endl;
 

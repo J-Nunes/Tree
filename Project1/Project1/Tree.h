@@ -133,19 +133,36 @@ class Tree
 		void clear(const TYPE& dataToDelete)
 		{
 			Stack<TreeNode<TYPE>*> s;
-			TreeNode<TYPE>* tmpNode = findNode(dataToDelete);
+			TreeNode<TYPE>* tmpTreeNode = findNode(dataToDelete);
 
-			while (tmpNode != NULL)
+			DListNode<TreeNode<TYPE>*>* tmpListNode = tmpTreeNode->sons.end;
+
+			//----Delete nodeToDelete of its parent list of sons
+			tmpListNode = tmpTreeNode->parent->sons.start;
+
+			while (tmpListNode->data != tmpTreeNode)
+				tmpListNode = tmpListNode->next;
+
+			tmpTreeNode->parent->sons.del(tmpListNode);
+			//----
+
+			while (tmpTreeNode != NULL)
 			{
-				DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.end;
+				tmpListNode = tmpTreeNode->sons.end;
 
-				while (tmp != NULL)
+				while (tmpListNode != NULL)
 				{
-					s.pushBack(tmp->data);
-					tmp = tmp->prev;
+					s.pushBack(tmpListNode->data);
+					tmpListNode = tmpListNode->prev;
 				}
-				delete tmpNode;
-				tmpNode = s.pop();
+
+				//Reset the list of sons of tmpTreeNode
+				tmpTreeNode->sons.start = tmpTreeNode->sons.end = NULL;
+
+				//delete tmpTreeNode
+				delete tmpTreeNode;
+
+				tmpTreeNode = s.pop();
 			}
 		}
 
@@ -187,44 +204,98 @@ class Tree
 		{
 			Stack<TreeNode<TYPE>*> s;
 			TreeNode<TYPE>* tmpTreeNode = rootNode;
+			bool emptyList = true;
 
 			while (tmpTreeNode != NULL)
 			{
-				if (tmpTreeNode->sons.start != NULL && list->end->data != tmpTreeNode->sons.end->data)
+				if (emptyList==true)
 				{
-					s.pushBack(tmpTreeNode);
-
-					DListNode<TreeNode<TYPE>*>* tmpListNode = tmpTreeNode->sons.end;
-
-					while (tmpListNode != NULL)
+					if (tmpTreeNode->sons.start != NULL)
 					{
-						s.pushBack(tmpListNode->data);
-						tmpListNode = tmpListNode->prev;
+						s.pushBack(tmpTreeNode);
+
+						DListNode<TreeNode<TYPE>*>* tmpListNode = tmpTreeNode->sons.end;
+
+						while (tmpListNode != NULL)
+						{
+							s.pushBack(tmpListNode->data);
+							tmpListNode = tmpListNode->prev;
+						}
+						tmpTreeNode = s.pop();
 					}
-					tmpTreeNode = s.pop();
+
+					else
+					{
+						list->add(tmpTreeNode);
+						tmpTreeNode = s.pop();
+						emptyList = false;
+					}
 				}
 
 				else
 				{
-					list->add(tmpTreeNode);
-					tmpTreeNode = s.pop();
+					if (tmpTreeNode->sons.start != NULL && list->end->data != tmpTreeNode->sons.end->data)
+					{
+						s.pushBack(tmpTreeNode);
+
+						DListNode<TreeNode<TYPE>*>* tmpListNode = tmpTreeNode->sons.end;
+
+						while (tmpListNode != NULL)
+						{
+							s.pushBack(tmpListNode->data);
+							tmpListNode = tmpListNode->prev;
+						}
+						tmpTreeNode = s.pop();
+					}
+
+					else
+					{
+						list->add(tmpTreeNode);
+						tmpTreeNode = s.pop();
+					}
 				}
 			}
-			
 		}
 
 		void iterativeInOrder(DList<TreeNode<TYPE>*>* list)const
 		{
 			Stack<TreeNode<TYPE>*> s;
 			TreeNode<TYPE>* tmpNode = rootNode;
+			bool emptyList = true;
 
 			while (tmpNode != NULL)
 			{
+				while (emptyList == true)
+				{
+					if (tmpNode->sons.start != NULL)
+					{
+						DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.start;
+						s.pushBack(tmpNode);
+						s.pushBack(tmpNode->sons.start->data);
+						tmpNode = s.pop();
+					}
+
+					else
+					{
+						list->add(tmpNode);
+						tmpNode = s.pop();
+						emptyList = false;
+					}
+				}
+
 				if (tmpNode->sons.start != NULL)
 				{
 					DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.start;
-					
-					if (list->end != tmpNode->sons.start)
+					DListNode<TreeNode<TYPE>*>* tmpExternalList = list->start;
+
+					while (tmpExternalList->data != tmpNode->sons.start->data)
+					{
+						tmpExternalList = tmpExternalList->next;
+						if (tmpExternalList == NULL)
+							break;
+					}
+
+					if (tmpExternalList == NULL || tmpExternalList->data != tmpNode->sons.start->data)
 					{
 						s.pushBack(tmpNode);
 						s.pushBack(tmpNode->sons.start->data);
@@ -233,7 +304,7 @@ class Tree
 
 					else
 					{
-						if (list->end == tmpNode->sons.end)
+						if (list->end->data == tmpNode->sons.end->data)
 						{
 							list->add(tmpNode);
 							tmpNode = s.pop();
