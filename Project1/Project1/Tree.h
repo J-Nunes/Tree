@@ -97,12 +97,12 @@ class Tree
 
 			while (nodeToReturn->data != dataToFind)
 			{
-				DListNode<TreeNode<TYPE>*>* tmp = nodeToReturn->sons.end;
+				DListNode<TreeNode<TYPE>*>* tmpListNode = nodeToReturn->sons.end;
 
-				while (tmp != NULL)
+				while (tmpListNode != NULL)
 				{
-					s.pushBack(tmp->data);
-					tmp = tmp->prev;
+					s.pushBack(tmpListNode->data);
+					tmpListNode = tmpListNode->prev;
 				}
 				nodeToReturn = s.pop();
 			}
@@ -113,19 +113,19 @@ class Tree
 		void clear()
 		{
 			Stack<TreeNode<TYPE>*> s;
-			TreeNode<TYPE>* tmpNode = rootNode;
+			TreeNode<TYPE>* tmpTreeNode = rootNode;
 
-			while (tmpNode != NULL)
+			while (tmpTreeNode != NULL)
 			{
-				DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.end;
+				DListNode<TreeNode<TYPE>*>* tmpListNode = tmpTreeNode->sons.end;
 
-				while (tmp != NULL)
+				while (tmpListNode != NULL)
 				{
-					s.pushBack(tmp->data);
-					tmp = tmp->prev;
+					s.pushBack(tmpListNode->data);
+					tmpListNode = tmpListNode->prev;
 				}
-				delete tmpNode;
-				tmpNode = s.pop();
+				delete tmpTreeNode;
+				tmpTreeNode = s.pop();
 			}
 			rootNode = NULL;
 		}
@@ -260,69 +260,67 @@ class Tree
 		void iterativeInOrder(DList<TreeNode<TYPE>*>* list)const
 		{
 			Stack<TreeNode<TYPE>*> s;
-			TreeNode<TYPE>* tmpNode = rootNode;
+			TreeNode<TYPE>* tmpTreeNode = rootNode;
 			bool emptyList = true;
 
-			while (tmpNode != NULL)
+			while (tmpTreeNode != NULL)
 			{
 				while (emptyList == true)
 				{
-					if (tmpNode->sons.start != NULL)
+					if (tmpTreeNode->sons.start != NULL)
 					{
-						DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.start;
-						s.pushBack(tmpNode);
-						s.pushBack(tmpNode->sons.start->data);
-						tmpNode = s.pop();
+						s.pushBack(tmpTreeNode);
+						s.pushBack(tmpTreeNode->sons.start->data);
+						tmpTreeNode = s.pop();
 					}
 
 					else
 					{
-						list->add(tmpNode);
-						tmpNode = s.pop();
+						list->add(tmpTreeNode);
+						tmpTreeNode = s.pop();
 						emptyList = false;
 					}
 				}
 
-				if (tmpNode->sons.start != NULL)
+				if (tmpTreeNode->sons.start != NULL)
 				{
-					DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.start;
-					DListNode<TreeNode<TYPE>*>* tmpExternalList = list->start;
+					DListNode<TreeNode<TYPE>*>* tmpListNode = list->start;
 
-					while (tmpExternalList->data != tmpNode->sons.start->data)
+					while (tmpListNode->data != tmpTreeNode->sons.start->data)
 					{
-						tmpExternalList = tmpExternalList->next;
-						if (tmpExternalList == NULL)
+						tmpListNode = tmpListNode->next;
+						if (tmpListNode == NULL)
 							break;
 					}
 
-					if (tmpExternalList == NULL || tmpExternalList->data != tmpNode->sons.start->data)
+					if (tmpListNode == NULL || tmpListNode->data != tmpTreeNode->sons.start->data)
 					{
-						s.pushBack(tmpNode);
-						s.pushBack(tmpNode->sons.start->data);
-						tmpNode = s.pop();
+						s.pushBack(tmpTreeNode);
+						s.pushBack(tmpTreeNode->sons.start->data);
+						tmpTreeNode = s.pop();
 					}
 
 					else
 					{
-						if (list->end->data == tmpNode->sons.end->data)
+						if (list->end->data == tmpTreeNode->sons.end->data)
 						{
-							list->add(tmpNode);
-							tmpNode = s.pop();
+							list->add(tmpTreeNode);
+							tmpTreeNode = s.pop();
 						}
 
 						else
 						{
-							list->add(tmpNode);
-							s.pushBack(tmpNode->sons.end->data);
-							tmpNode = s.pop();
+							list->add(tmpTreeNode);
+							s.pushBack(tmpTreeNode->sons.end->data);
+							tmpTreeNode = s.pop();
 						}
 					}
 				}
 
 				else
 				{
-					list->add(tmpNode);
-					tmpNode = s.pop();
+					list->add(tmpTreeNode);
+					tmpTreeNode = s.pop();
 				}
 			}
 		}
