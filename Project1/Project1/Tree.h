@@ -67,6 +67,7 @@ class Tree
 			rootNode = new TreeNode<TYPE>;
 			rootNode->data = rootData;
 			rootNode->parent = NULL;
+			rootNode->sons.start = rootNode->sons.end = NULL;
 		}
 
 		TreeNode<TYPE>* add(const TYPE& data)
@@ -75,6 +76,7 @@ class Tree
 			newNode->data = data;
 			rootNode->sons.add(newNode);
 			newNode->parent = rootNode;
+			newNode->sons.start = newNode->sons.end = NULL;
 			return newNode;
 		}
 
@@ -82,12 +84,13 @@ class Tree
 		{
 			TreeNode<TYPE>* newNode = new TreeNode<TYPE>;
 			newNode->data = data;
-			newNode->parent = findParent(parentData);
+			newNode->parent = findNode(parentData);
 			newNode->parent->sons.add(newNode);
+			newNode->sons.start = newNode->sons.end = NULL;
 			return newNode;
 		}
 		
-		TreeNode<TYPE>* findParent(const TYPE& dataToFind)
+		TreeNode<TYPE>* findNode(const TYPE& dataToFind)
 		{
 			Stack<TreeNode<TYPE>*> s;
 			TreeNode<TYPE>* nodeToReturn = rootNode;
@@ -109,29 +112,40 @@ class Tree
 
 		void clear()
 		{
-			DList<TreeNode<TYPE>*> list;
-			iterativePreOrder(&list);
-			list.clear();
-			rootNode = NULL;
-		}
-
-		void clear(TreeNode<TYPE>* nodeToDelete)const
-		{
-			Stack<TreeNode<TYPE>> s;
-			TreeNode<TYPE>* tmpNode = nodeToDelete;
+			Stack<TreeNode<TYPE>*> s;
+			TreeNode<TYPE>* tmpNode = rootNode;
 
 			while (tmpNode != NULL)
 			{
-				DListNode<TreeNode>* tmp = sons.end;
+				DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.end;
 
 				while (tmp != NULL)
 				{
-					s.push(tmp->data);
+					s.pushBack(tmp->data);
 					tmp = tmp->prev;
 				}
-
 				delete tmpNode;
-				tmpNode = s.pop;
+				tmpNode = s.pop();
+			}
+			rootNode = NULL;
+		}
+
+		void clear(const TYPE& dataToDelete)
+		{
+			Stack<TreeNode<TYPE>*> s;
+			TreeNode<TYPE>* tmpNode = findNode(dataToDelete);
+
+			while (tmpNode != NULL)
+			{
+				DListNode<TreeNode<TYPE>*>* tmp = tmpNode->sons.end;
+
+				while (tmp != NULL)
+				{
+					s.pushBack(tmp->data);
+					tmp = tmp->prev;
+				}
+				delete tmpNode;
+				tmpNode = s.pop();
 			}
 		}
 
@@ -176,7 +190,7 @@ class Tree
 
 			while (tmpTreeNode != NULL)
 			{
-				if (tmpTreeNode->sons.start != NULL && list->end != tmpTreeNode->sons.end)
+				if (tmpTreeNode->sons.start != NULL && list->end->data != tmpTreeNode->sons.end->data)
 				{
 					s.pushBack(tmpTreeNode);
 
