@@ -65,7 +65,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ArrayQueue.h" />
     <ClInclude Include="DList.h" />
+    <ClInclude Include="ListStack.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="Tree.h" />
   </ItemGroup>
