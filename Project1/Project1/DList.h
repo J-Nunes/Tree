@@ -149,5 +149,15 @@ public:
 		size = 0;
 	}
 
+	void concatenate(DList<TYPE>* list const)
+	{
+		if (list->start != NULL)
+		{
+			DListNode<TYPE>*   tmp = list->start;
+			while (tmp != NULL)
+				add(tmp->data);
+		}
+	}
+
 };
 #endif /*__DList_H__*/
