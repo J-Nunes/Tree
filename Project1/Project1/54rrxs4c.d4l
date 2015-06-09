@@ -1,7 +1,6 @@
 #include "DoubleList.h"
 #include "Tree.h"
 #include "Stack.h"
-#include "DynamicArray.h"
 
 #include<iostream>
 
@@ -9,6 +8,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+	int checker = 55;
 
 	DList<int> mylist;
 
@@ -23,16 +23,12 @@ int main(int argc, char** argv)
 	mylist3.add(6);
 
 	mylist.insertAfter(0, mylist2);
-	cout << mylist.count() << endl;
 
-	mylist.insertAfter(1, mylist3);	
-	cout << mylist.count() << endl;
+	mylist.insertAfter(1, mylist3);
 
 	mylist.insertAfter(0, mylist3);
 
-	cout << mylist.count() << endl ;
-	cout << mylist.start->data << endl;
-	cout << mylist.end->data << endl;
+	cout << mylist.count(0) << endl ;
 
 	getchar();
 

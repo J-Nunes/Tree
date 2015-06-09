@@ -5,6 +5,7 @@
 #include "..\Project1\Stack.h"
 #include "..\Project1\DList.h"
 #include "..\Project1\ArrayQueue.h"
+#include "../Project1/DynamicArray.h"
 
 
 #include<assert.h>
@@ -270,6 +271,99 @@ namespace UnitTest
 			tree.iterativeInOrder(&list);
 
 			Assert::AreEqual(list.count(), checker);
+		}
+
+		TEST_METHOD(TreeCalcAddition)
+		{
+			int checker = 55;
+
+			Tree<int> tree(1);
+			tree.add(2, 1);
+			tree.add(3, 1);
+			tree.add(4, 1);
+			tree.add(5, 2);
+			tree.add(6, 2);
+			tree.add(7, 2);
+			tree.add(8, 4);
+			tree.add(9, 4);
+			tree.add(10, 9);
+			Assert::AreEqual((int)tree.recursiveCalcAddition(), checker);
+			Assert::AreEqual((int)tree.iterativeCalcAddition(), checker);
+		}
+
+
+		TEST_METHOD(DynArray_Operator_concat)
+		{
+			DynamicArray<int> array(5);
+
+			array.pushBack(1);
+			array.pushBack(2);
+			array.pushBack(4);
+			array.pushBack(5);
+			array.pushBack(8);
+
+			DynamicArray<int> array2;
+
+			array2.pushBack(991);
+			array2.pushBack(992);
+			array2.pushBack(993);
+
+			array += array2;
+
+			Assert::AreEqual((int)array.getElementsNumber(), 8);
+			Assert::AreEqual((int)array[0], 1);
+			Assert::AreEqual((int)array[1], 2);
+			Assert::AreEqual((int)array[2], 4);
+			Assert::AreEqual((int)array[3], 5);
+			Assert::AreEqual((int)array[4], 8);
+			Assert::AreEqual((int)array[5], 991);
+			Assert::AreEqual((int)array[6], 992);
+			Assert::AreEqual((int)array[7], 993);
+		}
+
+		TEST_METHOD(ListInsert)
+		{
+			DList<int> mylist;
+
+			DList<int> mylist2;
+			mylist2.add(1);
+			mylist2.add(2);
+			mylist2.add(3);
+
+			DList<int> mylist3;
+			mylist3.add(4);
+			mylist3.add(5);
+			mylist3.add(6);
+
+			mylist.insertAfter(0, mylist2);
+
+			Assert::AreEqual(mylist.getNode(0), 1);
+			Assert::AreEqual(mylist.getNode(1), 2);
+			Assert::AreEqual(mylist.getNode(2), 3);
+
+			mylist.insertAfter(1, mylist3);
+
+			Assert::AreEqual(mylist.getNode(0), 1);
+			Assert::AreEqual(mylist.getNode(1), 2);
+			Assert::AreEqual(mylist.getNode(2), 4);
+			Assert::AreEqual(mylist.getNode(3), 5);
+			Assert::AreEqual(mylist.getNode(4), 6);
+			Assert::AreEqual(mylist.getNode(5), 3);
+
+			mylist.insertAfter(0, mylist3);
+
+			Assert::AreEqual(mylist.getNode(0), 1);
+			Assert::AreEqual(mylist.getNode(1), 4);
+			Assert::AreEqual(mylist.getNode(2), 5);
+			Assert::AreEqual(mylist.getNode(3), 6);
+			Assert::AreEqual(mylist.getNode(4), 2);
+			Assert::AreEqual(mylist.getNode(5), 4);
+			Assert::AreEqual(mylist.getNode(6), 5);
+			Assert::AreEqual(mylist.getNode(7), 6);
+			Assert::AreEqual(mylist.getNode(8), 3);
+
+			Assert::IsTrue(1 == mylist.start->data);
+			Assert::IsTrue(3 == mylist.end->data);
 		}
 	};
 }

@@ -65,6 +65,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\ExamenParcial\ExamenParcial\ExamenParcial\DynamicArray.h" />
     <ClInclude Include="ArrayQueue.h" />
     <ClInclude Include="DList.h" />
     <ClInclude Include="ListStack.h" />

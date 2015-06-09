@@ -149,13 +149,68 @@ public:
 		size = 0;
 	}
 
-	void concatenate(DList<TYPE>* list const)
+	TYPE getNode(const unsigned int index)
+	{
+		DListNode<TYPE>*   ret = start;
+
+		for (unsigned int i = 0; i < index; i++)
+			ret = ret->next;
+
+		return ret->data;
+	}
+
+	void concatenate(const DList<TYPE>* list)
 	{
 		if (list->start != NULL)
 		{
 			DListNode<TYPE>*   tmp = list->start;
 			while (tmp != NULL)
 				add(tmp->data);
+		}
+	}
+
+	void insertAfter(const unsigned int index, const DList<TYPE>& list)
+	{
+		if (start != NULL)
+		{
+			DListNode<TYPE>*   tmpFirstList = start;
+			DListNode<TYPE>*   tmpSecondList = list.start;
+
+			for (unsigned int i = 0; i < index; i++)
+				tmpFirstList = tmpFirstList->next;
+
+			for (unsigned int i = 0; i < tmpSecondList.count(); i++)
+			{
+				tmpFirstList->next->prev = tmpSecondList;
+				tmpFirstList->next = tmpSecondList;
+
+				tmpSecondList = tmpSecondList->next;
+				tmpFirstList = tmpFirstList->next;
+				size++;
+
+				if (i == list.size)
+					end = tmpSecondList;
+			}
+		}
+
+		else
+		{
+			DListNode<TYPE>*   tmpFirstList = start;
+			DListNode<TYPE>*   tmpSecondList = list.start;
+
+			while (tmpSecondList != NULL)
+			{
+				if (tmpSecondList == list.start)
+					start = tmpSecondList;
+
+				tmpFirstList = tmpSecondList;
+				tmpSecondList = tmpSecondList->next;
+				tmpFirstList = tmpFirstList->next;
+				size++;
+
+				if (size == list.size)
+					end = tmpSecondList;
+			}
 		}
 	}
 
