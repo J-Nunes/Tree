@@ -365,5 +365,44 @@ namespace UnitTest
 			Assert::IsTrue(1 == mylist.start->data);
 			Assert::IsTrue(3 == mylist.end->data);
 		}
+
+		TEST_METHOD(p2List_delNodes_mid)
+		{
+			DList<int> l;
+			l.add(1);
+			l.add(2);
+			l.add(3);
+			l.add(4);
+			l.delNodes(1, 2);
+			Assert::AreEqual((int)1, l.start->data);
+			Assert::AreEqual((int)4, l.end->data);
+			Assert::AreEqual((unsigned int)2, l.count());
+		}
+		// P2List delete few nodes ----------------------------------------
+		TEST_METHOD(p2List_delNodes_begin)
+		{
+			DList<int> l;
+			l.add(1);
+			l.add(2);
+			l.add(3);
+			l.add(4);
+			l.delNodes(0, 3);
+			Assert::AreEqual((int)4, l.start->data);
+			Assert::AreEqual((int)4, l.end->data);
+			Assert::AreEqual((unsigned int)1, l.count());
+		}
+		// P2List delete few nodes ----------------------------------------
+		TEST_METHOD(p2List_delNodes_end)
+		{
+			DList<int> l;
+			l.add(1);
+			l.add(2);
+			l.add(3);
+			l.add(4);
+			l.delNodes(2, 100);
+			Assert::AreEqual((int)1, l.start->data);
+			Assert::AreEqual((int)2, l.end->data);
+			Assert::AreEqual((unsigned int)2, l.count());
+		}
 	};
 }

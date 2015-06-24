@@ -69,7 +69,7 @@ public:
 	/**
 	* Add new item
 	*/
-	unsigned int add(const TYPE& item)
+	void add(const TYPE& item)
 	{
 		DListNode<TYPE>*   newNode;
 		newNode = new DListNode < TYPE >(item);
@@ -85,49 +85,45 @@ public:
 			end = newNode;
 		}
 
-		return(++size);
+		size++;
 	}
 
 	/**
 	* Deletes an item from the list
 	*/
-	bool del(DListNode<TYPE>* item)
+	void del(DListNode<TYPE>* item)
 	{
-		if(item == NULL)
+		if (item != NULL)
 		{
-			return (false);
-		}
-
-		// Now reconstruct the list
-		if(item->prev != NULL)
-		{
-			item->prev->next = item->next;
-
-			if(item->next != NULL)
+			if (item->prev != NULL)
 			{
-				item->next->prev = item->prev;
+				item->prev->next = item->next;
+
+				if (item->next != NULL)
+				{
+					item->next->prev = item->prev;
+				}
+				else
+				{
+					end = item->prev;
+				}
 			}
 			else
 			{
-				end = item->prev;
+				if (item->next)
+				{
+					item->next->prev = NULL;
+					start = item->next;
+				}
+				else
+				{
+					start = end = NULL;
+				}
 			}
-		}
-		else
-		{
-			if(item->next)
-			{
-				item->next->prev = NULL;
-				start = item->next;
-			}
-			else
-			{
-				start = end = NULL;
-			}
-		}
 
-		delete item;
-		--size;
-		return(true);
+			delete item;
+			--size;
+		}
 	}
 
 	/**
@@ -173,45 +169,86 @@ public:
 	{
 		if (start != NULL)
 		{
-			DListNode<TYPE>*   tmpFirstList = start;
-			DListNode<TYPE>*   tmpSecondList = list.start;
-
-			for (unsigned int i = 0; i < index; i++)
-				tmpFirstList = tmpFirstList->next;
-
-			for (unsigned int i = 0; i < tmpSecondList.count(); i++)
+			if (index != size - 1)
 			{
-				tmpFirstList->next->prev = tmpSecondList;
-				tmpFirstList->next = tmpSecondList;
+				DListNode<TYPE>*   nodeBeforeInsert = start;
+				DListNode<TYPE>*   externalListNode = list.start;
 
-				tmpSecondList = tmpSecondList->next;
-				tmpFirstList = tmpFirstList->next;
-				size++;
+				for (unsigned int i = 0; i < index; i++)
+					nodeBeforeInsert = nodeBeforeInsert->next;
 
-				if (i == list.size)
-					end = tmpSecondList;
+				DListNode<TYPE>*   tmp = nodeBeforeInsert->next;
+
+				while (externalListNode != NULL)
+				{
+					DListNode<TYPE>*   newNode;
+					newNode = new DListNode < TYPE >(externalListNode->data);
+
+					nodeBeforeInsert->next = newNode;
+					newNode->prev = nodeBeforeInsert;
+
+					nodeBeforeInsert = nodeBeforeInsert->next;
+					externalListNode = externalListNode->next;
+				}
+
+				tmp->prev = nodeBeforeInsert;
+				nodeBeforeInsert->next = tmp;
+			}
+
+			else
+			{
+				DListNode<TYPE>*   externalListNode = list.start;
+
+				for (; externalListNode != NULL; externalListNode = externalListNode->next)
+					add(externalListNode->data);
 			}
 		}
 
 		else
 		{
-			DListNode<TYPE>*   tmpFirstList = start;
-			DListNode<TYPE>*   tmpSecondList = list.start;
+			DListNode<TYPE>*   externalListNode = list.start;
 
-			while (tmpSecondList != NULL)
+			for (; externalListNode != NULL; externalListNode = externalListNode->next)
+				add(externalListNode->data);
+		}
+	}
+
+	const unsigned int delNodes(const unsigned int index, const unsigned int nodesToDelete)
+	{
+		unsigned int ret = 0;
+
+		if (start != NULL)
+		{
+			DListNode<TYPE>*   tmp = start;
+			for (unsigned int i = 0; i < index; i++)
+				tmp = tmp->next;
+			DListNode<TYPE>*  tmp2 = tmp;
+
+			if (index + nodesToDelete < size)
 			{
-				if (tmpSecondList == list.start)
-					start = tmpSecondList;
+				for (unsigned int i = 0; i < nodesToDelete; i++)
+				{
+					tmp = tmp->next;
+					del(tmp2);
+					tmp2 = tmp;
+					ret++;
+				}
+			}
 
-				tmpFirstList = tmpSecondList;
-				tmpSecondList = tmpSecondList->next;
-				tmpFirstList = tmpFirstList->next;
-				size++;
+			else
+			{
+				end = tmp->prev;
 
-				if (size == list.size)
-					end = tmpSecondList;
+				while (tmp != NULL)
+				{
+					tmp = tmp->next;
+					del(tmp2);
+					tmp2 = tmp;
+					ret++;
+				}
 			}
 		}
+		return ret;
 	}
 
 };
