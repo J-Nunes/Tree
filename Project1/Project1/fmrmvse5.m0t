@@ -1,0 +1,45 @@
+#define TEST(a) (a)? printf("Test : " #a "SUCCESS"): printf("Test : " #a "FAILURE")
+
+#include "DoubleList.h"
+#include "Tree.h"
+#include "Stack.h"
+#include "DynamicArray.h"
+#include "Rectangle.h"
+
+#include<iostream>
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+	DList<int> list;
+	list.add(1);
+	list.add(2);
+	list.add(3);
+	list.add(4);
+	list.add(5);
+	list.add(6);
+	list.add(7);
+	list.flip();
+
+	TEST(list.start->data == 7);
+	TEST(list.start->next->data == 6);
+	TEST(list.start->next->next->data == 5);
+	TEST(list.start->next->next->next->data == 4);
+	TEST(list.end->prev->prev->data == 3);
+	TEST(list.end->prev->data == 2);
+	TEST(list.end->data == 1);
+
+	DynamicArray<int> array(5);
+	array.pushBack(100);
+	array.pushBack(200);
+	array.pushBack(300);
+	array.pushBack(400);
+	array.pushBack(500);
+	array.prefixList(list);
+	TEST(array.getElementsNumber() == 12);
+
+	getchar();
+
+	return 0;
+}

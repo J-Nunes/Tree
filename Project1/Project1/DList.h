@@ -61,7 +61,7 @@ public:
 	/**
 	* Get Size
 	*/
-	unsigned int count()
+	unsigned int count()const
 	{
 		return size;
 	}
@@ -249,6 +249,26 @@ public:
 			}
 		}
 		return ret;
+	}
+
+	void flip()
+	{
+		if (size > 1)
+		{
+			DListNode<TYPE>*   leftNode = start;
+			DListNode<TYPE>*   rightNode = end;
+			TYPE   tmp = leftNode->data;
+
+			for (unsigned int i = 0; i < size / 2; i++)
+			{
+				tmp = leftNode->data;
+				leftNode->data = rightNode->data;
+				rightNode->data = tmp;
+
+				leftNode = leftNode->next;
+				rightNode = rightNode->prev;
+			}
+		}
 	}
 
 };

@@ -159,11 +159,10 @@ public:
 		if (list.start != NULL)
 		{
 			DListNode<TYPE>*   tmp = list.start;
-			unsigned int listSize = list.count();
 
 			if (elementsNumber == 0)
 			{
-				for (unsigned int i = 0; i < listSize; i++)
+				for (unsigned int i = 0; i < list.count(); i++)
 				{
 					pushBack(tmp->data);
 					tmp = tmp->next;
@@ -172,16 +171,16 @@ public:
 
 			else
 			{
-				if (elementsNumber + listSize > allocatedMemory)
-					reallocate(elementsNumber + listSize);
+				if (elementsNumber + list.count() > allocatedMemory)
+					reallocate(elementsNumber + list.count());
 
-				for (unsigned int i = 0; i < elementsNumber; i++)
-					data[listSize + i] = data[i];
-				for (unsigned int i = 0; i < listSize; i++)
+				for (unsigned int i = 0; i < list.count(); i++)
 				{
+					data[elementsNumber] = data[i];
 					data[i] = tmp->data;
-					elementsNumber++;
+					
 					tmp = tmp->next;
+					elementsNumber++;
 				}
 			}
 		}

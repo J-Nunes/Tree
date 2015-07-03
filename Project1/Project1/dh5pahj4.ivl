@@ -154,37 +154,20 @@ public:
 		}
 	}
 
-	void prefixList(const DList<TYPE>& list)
+	void prefixList(const DList& list)
 	{
-		if (list.start != NULL)
+		if (elementsNumber == 0)
 		{
-			DListNode<TYPE>*   tmp = list.start;
-			unsigned int listSize = list.count();
-
-			if (elementsNumber == 0)
+			DListNode<TYPE>*   tmp = start;
+			for (unsigned int i = 0; i < list.count(); i++)
 			{
-				for (unsigned int i = 0; i < listSize; i++)
-				{
-					pushBack(tmp->data);
-					tmp = tmp->next;
-				}
-			}
-
-			else
-			{
-				if (elementsNumber + listSize > allocatedMemory)
-					reallocate(elementsNumber + listSize);
-
-				for (unsigned int i = 0; i < elementsNumber; i++)
-					data[listSize + i] = data[i];
-				for (unsigned int i = 0; i < listSize; i++)
-				{
-					data[i] = tmp->data;
-					elementsNumber++;
-					tmp = tmp->next;
-				}
+				pushBack(tmp->data);
+				tmp = tmp->next;
 			}
 		}
+
+		if (elementsNumber + list.count() > allocatedMemory)
+			reallocate(elementsNumber + list.count());
 	}
 
 	int& operator[] (unsigned int index)

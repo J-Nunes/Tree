@@ -1,0 +1,38 @@
+#ifndef __Rectangle_H__
+#define __Rectangle_H__
+
+
+template<class TYPE>
+class Rectangle
+{
+public:
+
+	TYPE			x;
+	TYPE			y;
+	TYPE			w;
+	TYPE			h;
+
+public:
+	// Constructors
+	Rectangle(TYPE ox, TYPE oy, TYPE ow, TYPE oh)
+	{
+		x = ox;
+		y = oy;
+		w = ow;
+		h = oh;
+	}
+
+	Rectangle(const Rectangle& r)
+	{
+		x = r.x;
+		y = r.y;
+		w = r.w;
+		h = r.h;
+	}
+
+	// Destructor
+	~Rectangle()
+	{
+	}
+};
+#endif
